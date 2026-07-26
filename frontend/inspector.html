@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Дашборд инспектора - ФНС</title>
+        <link rel="stylesheet" href="css/style.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body class="dashboard-page">
+        <div class="inspector-layout">
+            <aside class="sidebar">
+                <div class="sidebar-logo">ФНС России</div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active">Аналитика</a>
+                    <a href="#" class="nav-item">Налогоплательщики</a>
+                    <a href="#" class="nav-item">Отчеты</a>
+                    <a href="#" class="nav-item">Настройки</a>
+                </nav>
+            </aside>
+
+            <main class="main-workspace">
+                <header class="inspector-header">
+                    <div class="header-title">Аналитическая панель региона</div>
+                    <div class="profile-container">
+                        <div class="inspector-info">
+                            <span class="user-name">Шаповалова О.В.</span>
+                            <span class="user-role">Руководитель (Код: 7000)</span>
+                        </div>
+                        <div class="avatar">ОШ</div>
+                    </div>
+                </header>
+
+                <div class="workspace-content">
+                    <section class="kpi-row">
+                        <div class="kpi-card">
+                            <p class="label">Собрано налогов (год)</p>
+                            <h2 class="amount">45 200 000 ₽</h2>
+                        </div>
+                        <div class="kpi-card">
+                            <p class="label">Налогоплательщиков</p>
+                            <h2 class="amount">12 450</h2>
+                        </div>
+                        <div class="kpi-card">
+                            <p class="label">Задолженность</p>
+                            <h2 class="amount alert">1 200 000 ₽</h2>
+                        </div>
+                    </section>
+
+                    <section class="charts-row">
+                        <div class="chart-card pie-chart-card">
+                            <h3>Структура по видам налогов</h3>
+                            <div class="chart-placeholder">
+                                <div class="pie-placeholder"></div>
+                                <div class="legend">
+                                    <div><span class="dot blue"></span> НДФЛ - 60%</div>
+                                    <div><span class="dot pink"></span> Транспортный - 40%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-card bar-chart-card">
+                            <h3>Поступления по месяцам</h3>
+                            <div class="bar-placeholder">
+                                <div class="bar" style="height: 40%"><span>Янв</span></div>
+                                <div class="bar" style="height: 60%"><span>Фев</span></div>
+                                <div class="bar" style="height: 80%"><span>Мар</span></div>
+                                <div class="bar" style="height: 50%"><span>Апр</span></div>
+                                <div class="bar" style="height: 90%"><span>Май</span></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="report-section">
+                        <h3>Отчет о налоговых отчислениях по регионам</h3>
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Регион страны</th>
+                                    <th>Вид налога</th>
+                                    <th>Уровень налога</th>
+                                    <th>Кол-во плательщиков</th>
+                                    <th>Сумма отчислений</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Томская область</td>
+                                    <td>Транспортный</td>
+                                    <td>Региональный</td>
+                                    <td>15 000</td>
+                                    <td class="sum">45 000 000 ₽</td>
+                                </tr>
+                                <tr class="row-alt">
+                                    <td>Томская область</td>
+                                    <td>НДФЛ</td>
+                                    <td>Федеральный</td>
+                                    <td>32 100</td>
+                                    <td class="sum">120 500 000 ₽</td>
+                                </tr>
+                                <tr>
+                                    <td>Томская область</td>
+                                    <td>Имущественный</td>
+                                    <td>Местный</td>
+                                    <td>18 400</td>
+                                    <td class="sum">21 000 000 ₽</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>

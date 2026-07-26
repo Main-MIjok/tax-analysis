@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в личный кабинет - ФНС</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="'stylesheet">
+</head>
+<body class="login-page"
+    <div class="login-wrapper">
+        <div class="login-card">
+
+            <!-- выбор ролей -->
+
+            <div class="role-tabs">
+                <button class="tab-btn active" id="tab-taxpayer" onclick="switchRole('taxpayer')">Налогоплательщик</button>
+                <button class = tab-btn" id="tab-inspector" onclick="switchRole('inspector')">Сотрудник</button>
+            </div>
+
+            <!-- панель авторизации  -->
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label id="login-label" for="login">Логин (ИНН)</label>
+                    <input type="text" id="login" placeholder="Введите ваш ИНН" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" placeholder="Введите пароль" required>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#">Забыли пароль?</a>
+                </div>
+
+                <button type="submit" class="btn-primary">Войти</button>
+                <button type="button" class="btn-secondary">Войти через Госуслуги</button>
+
+            <form id="loginForm" action="taxpayer.html"></form>
+
+        </form>
+        </div>
+    </div>
+
+    <!-- скрипт -->
+
+    <script src="js/main.js"></script>
+</body>
+</html>
