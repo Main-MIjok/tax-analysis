@@ -18,6 +18,49 @@ app.get("/api/test", async (req, res) => {
     }
 });
 
+app.get("/api/taxpayer/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const userQuery = await pool.query(`SELECT full_name, inn FROM taxpayers WHERE id = $1`, [id]);
+
+        if (userQuery.rows.length === 0) {
+            return res.status(404).json({ error: "Пользователь не найден" });
+        }
+
+        const propertyQuery = await pool.query(
+            `SELECT p.name as property_name, t.name as tax_type 
+             FROM properties p 
+             JOIN tax_types t ON p.tax_type_id = t.id 
+             WHERE p.taxpayer_id = $1`,
+            [id],
+        );
+
+        const paymentsQuery = await pool.query(
+            `SELECT p.amount, p.status, p.payment_date, t.name as tax_type, pr.name as property_name 
+             FROM payments p 
+             JOIN tax_types t ON p.tax_type_id = t.id 
+             LEFT JOIN properties pr ON p.property_id = pr.id 
+             WHERE p.taxpayer_id = $1`,
+            [id],
+        );
+
+        const unpaidSum = paymentsQuery.rows
+            .filter(pay => pay.status === "Не оплачено")
+            .reduce((sum, pay) => sum + parseFloat(pay.amount), 0);
+
+        res.json({
+            profile: userQuery.rows[0],
+            properties: propertyQuery.rows,
+            payments: paymentsQuery.rows,
+            totalDebt: unpaidSum,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Ошибка сервера при получении данных" });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Сервер налоговой системы запущен на http://localhost:${PORT}`);
 });

@@ -17,8 +17,8 @@
                 <h1>Личный кабинет <span>Налогоплательщика</span></h1>
             </div>
             <div class="profile-container">
-                <span class="user-name">Иванов И.И.</span>
-                <div class="avatar">ИИ</div>
+                <span class="user-name"> id="userName">Загрузка...</span>
+                <div class="avatar">id="userAvatar">--</div>
             </div>
         </header>
 
@@ -26,7 +26,7 @@
             <section class="summary-card">
                 <div class="summary-text">
                     <p class="label">Начислено налогов</p>
-                    <h2 class="amount">12 500 Руб.</h2>
+                    <h2 class="amount">id="totalDebt">0 Руб.</h2>
                     <p class="date-info">Срок уплаты до 1 декабря 2026 г.</p>
                 </div>
                 <button class="btn-pay">Оплатить</button>
@@ -34,32 +34,7 @@
 
             <section class="property-section">
                 <h3>Мое имущество</h3>
-                <div class="property-list">
-                    <!-- Карточка 1 -->
-                    <div class="property-card">
-                        <div class="icon" style="background: #f3e8ff">🚗</div>
-                        <div class="info">
-                            <h4>Автомобиль Polo</h4>
-                            <p>Транспортный налог</p>
-                        </div>
-                    </div>
-                    <!-- Карточка 2 -->
-                    <div class="property-card">
-                        <div class="icon" style="background: #fce7f3">🏠</div>
-                        <div class="info">
-                            <h4>Квартира 50 кв.м</h4>
-                            <p>Налог на недвижимость</p>
-                        </div>
-                    </div>
-                    <!-- Карточка 3 -->
-                    <div class="property-card">
-                        <div class="icon" style="background: #f3e8ff">🚗</div>
-                        <div class="info">
-                            <h4>Автомобиль Polo</h4>
-                            <p>Транспортный налог</p>
-                        </div>
-                    </div>
-                </div>
+                <div class="property-list" id="propertyContainer"></div>
             </section>
 
             <section class="history-section">
@@ -74,38 +49,10 @@
                             <th>Статус</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>15.05.2026</td>
-                            <td>Транспортный налог</td>
-                            <td>Автомобиль Polo</td>
-                            <td class="sum">5 000 Руб.</td>
-                            <td class="status-success">Оплачено</td>
-                        </tr>
-                        <tr class="row-alt">
-                            <td>15.05.2026</td>
-                            <td>НДФЛ</td>
-                            <td>-</td>
-                            <td class="sum">100 Руб.</td>
-                            <td class="status-success">Оплачено</td>
-                        </tr>
-                        <tr>
-                            <td>15.05.2026</td>
-                            <td>Транспортный налог</td>
-                            <td>Автомобиль Polo</td>
-                            <td class="sum">5 000 Руб.</td>
-                            <td class="status-success">Оплачено</td>
-                        </tr>
-                        <tr class="row-alt">
-                            <td>15.05.2026</td>
-                            <td>Налог на недвижимость</td>
-                            <td>Квартира 50 кв.м</td>
-                            <td class="sum">8 000 Руб.</td>
-                            <td class="status-success">Оплачено</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="paymentsTableBody"></tbody>
                 </table>
             </section>
         </main>
+        <script scr="js/main.js"></script>
     </body>
 </html>
