@@ -23,7 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await response.json();
 
                 if (data.success) {
+                    console.log("Сервер прислал ID:", data.profileId);
+
                     localStorage.setItem("profileId", data.profileId);
+
                     window.location.href = data.redirect;
                 } else {
                     alert("Ошибка входа: " + data.message);

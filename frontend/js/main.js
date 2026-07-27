@@ -1,3 +1,4 @@
+console.log("Скрипт main.js успешно подключен!");
 function switchRole(role) {
     document.getElementById("tab-taxpayer").classList.remove("active");
     document.getElementById("tab-inspector").classList.remove("active");
@@ -21,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!userNameElem) return;
 
     const profileId = localStorage.getItem("profileId");
-    if (!profileId) {
+    if (!profileId || profileId === "undefined" || profileId === "null") {
         alert("Сессия не найдена. Пожалуйста, авторизуйтесь.");
         window.location.href = "index.html";
         return;
@@ -83,5 +84,125 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     } catch (err) {
         console.error("Ошибка при загрузке данных кабинета:", err);
+    }
+
+    const payButton = document.getElementById("payButton");
+
+    if (payButton) {
+        payButton.addEventListener("click", async () => {
+            const confirmPay = confirm("Вы уверены, что хотите оплатить все начисленные налоги?");
+            if (!confirmPay) return;
+
+            try {
+                const payResponse = await fetch("http://localhost:3000/api/pay", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ taxpayerId: profileId }),
+                });
+
+                const result = await payResponse.json();
+
+                if (result.success) {
+                    alert("Успешно! Все задолженности погашены.");
+                    window.location.reload();
+                } else {
+                    alert("Произошла ошибка при оплате.");
+                }
+            } catch (err) {
+                console.error("Ошибка оплаты:", err);
+                alert("Не удалось связаться с сервером.");
+            }
+        });
+    }
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const inspectorNameElem = document.getElementById("inspectorName");
+    if (!inspectorNameElem) return;
+
+    const profileId = localStorage.getItem("profileId");
+    if (!profileId || profileId === "undefined" || profileId === "null") {
+        alert("Сессия не найдена. Пожалуйста, авторизуйтесь.");
+        window.location.href = "index.html";
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/inspector/${profileId}`);
+        const data = await response.json();
+
+        inspectorNameElem.textContent = data.profile.full_name;
+        document.getElementById("inspectorRole").textContent =
+            `${data.profile.position} (Код: ${data.profile.dept_code})`;
+
+        const initials = data.profile.full_name
+            .split(" ")
+            .map(n => n[0])
+            .join("")
+            .toUpperCase();
+        document.getElementById("inspectorAvatar").textContent = initials;
+
+        const tableBody = document.getElementById("inspectorTableBody");
+        tableBody.innerHTML = "";
+
+        let totalDebt = 0;
+
+        data.taxpayers.forEach((tp, index) => {
+            const rowClass = index % 2 === 1 ? "row-alt" : "";
+            const debtNum = parseFloat(tp.total_debt);
+            totalDebt += debtNum;
+
+            const debtHtml =
+                debtNum > 0
+                    ? `<span style="color: #E63946; font-weight: bold;">Долг: ${debtNum.toLocaleString("ru-RU")} ₽</span>`
+                    : `<span style="color: #2A9D8F;">Нет задолженностей</span>`;
+
+            tableBody.innerHTML += `
+                <tr class="${rowClass}">
+                    <td>${tp.inn}</td>
+                    <td>${tp.full_name}</td>
+                    <td>${debtHtml}</td>
+                    <td><button class="btn-fine" data-id="${tp.id}" style="padding: 6px 12px; font-size: 12px; cursor: pointer; background: #E63946; color: white; border: none; border-radius: 4px;">Штраф 1000 ₽</button></td>
+                </tr>
+            `;
+        });
+
+        const fineButtons = document.querySelectorAll(".btn-fine");
+
+        fineButtons.forEach(button => {
+            button.addEventListener("click", async e => {
+                const taxpayerId = e.target.getAttribute("data-id");
+
+                const confirmFine = confirm("Вы уверены, что хотите начислить штраф 1000 ₽ этому налогоплательщику?");
+                if (!confirmFine) return;
+
+                try {
+                    const fineResponse = await fetch("http://localhost:3000/api/add-tax", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ taxpayerId: taxpayerId, amount: 1000 }),
+                    });
+
+                    const result = await fineResponse.json();
+
+                    if (result.success) {
+                        alert("Штраф успешно занесен в базу данных!");
+                        window.location.reload();
+                    } else {
+                        alert("Ошибка при начислении штрафа.");
+                    }
+                } catch (err) {
+                    console.error("Ошибка сети:", err);
+                    alert("Не удалось связаться с сервером.");
+                }
+            });
+        });
+
+        document.getElementById("kpiTaxpayers").textContent = data.taxpayers.length;
+        document.getElementById("kpiDebt").textContent = `${totalDebt.toLocaleString("ru-RU")} ₽`;
+    } catch (err) {
+        console.error("Ошибка загрузки данных инспектора:", err);
     }
 });

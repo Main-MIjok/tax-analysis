@@ -18,6 +18,58 @@ app.get("/api/test", async (req, res) => {
     }
 });
 
+app.post("/api/pay", async (req, res) => {
+    const { taxpayerId } = req.body;
+
+    try {
+        const result = await pool.query(
+            `UPDATE payments 
+             SET status = 'Оплачено', payment_date = CURRENT_DATE 
+             WHERE taxpayer_id = $1 AND status = 'Не оплачено'`,
+            [taxpayerId],
+        );
+
+        res.json({ success: true, message: "Налоги успешно оплачены" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Ошибка сервера при проведении платежа" });
+    }
+});
+
+app.get("/api/inspector/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const inspectorQuery = await pool.query(`SELECT full_name, position, dept_code FROM inspectors WHERE id = $1`, [
+            id,
+        ]);
+
+        if (inspectorQuery.rows.length === 0) {
+            return res.status(404).json({ error: "Сотрудник не найден" });
+        }
+
+        const taxpayersQuery = await pool.query(
+            `SELECT 
+                t.id, 
+                t.inn, 
+                t.full_name, 
+                COALESCE(SUM(p.amount) FILTER (WHERE p.status = 'Не оплачено'), 0) as total_debt
+             FROM taxpayers t
+             LEFT JOIN payments p ON t.id = p.taxpayer_id
+             GROUP BY t.id, t.inn, t.full_name
+             ORDER BY total_debt DESC`,
+        );
+
+        res.json({
+            profile: inspectorQuery.rows[0],
+            taxpayers: taxpayersQuery.rows,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Ошибка сервера при загрузке данных инспектора" });
+    }
+});
+
 app.get("/api/taxpayer/:id", async (req, res) => {
     const { id } = req.params;
 
@@ -92,6 +144,8 @@ app.post("/api/login", async (req, res) => {
 
                 const redirectUrl = role === "taxpayer" ? "taxpayer.html" : "inspector.html";
 
+                console.log("Логин:", login, "роль:", role, "=> profileId:", profileId);
+
                 res.json({ success: true, redirect: redirectUrl, profileId: profileId });
             }
         } else {
@@ -100,5 +154,22 @@ app.post("/api/login", async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Ошибка сервера БД" });
+    }
+});
+
+app.post("/api/add-tax", async (req, res) => {
+    const { taxpayerId, amount } = req.body;
+
+    try {
+        await pool.query(
+            `INSERT INTO payments (taxpayer_id, tax_type_id, amount, status) 
+             VALUES ($1, 3, $2, 'Не оплачено')`,
+            [taxpayerId, amount],
+        );
+
+        res.json({ success: true, message: "Штраф успешно начислен" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Ошибка сервера при начислении штрафа" });
     }
 });
