@@ -38,10 +38,18 @@ app.post("/api/login", async (req, res) => {
             const user = result.rows[0];
 
             if (user.role_name === role) {
+                let profileId = null;
+                if (role === "taxpayer") {
+                    const tp = await pool.query("SELECT id FROM taxpayers WHERE user_id = $1", [user.id]);
+                    if (tp.rows.length > 0) profileId = tp.rows[0].id;
+                } else {
+                    const insp = await pool.query("SELECT id FROM inspectors WHERE user_id = $1", [user.id]);
+                    if (insp.rows.length > 0) profileId = insp.rows[0].id;
+                }
+
                 const redirectUrl = role === "taxpayer" ? "taxpayer.html" : "inspector.html";
-                res.json({ success: true, redirect: redirectUrl });
-            } else {
-                res.status(403).json({ success: false, message: "Неверно выбрана роль (вкладка)" });
+
+                res.json({ success: true, redirect: redirectUrl, profileId: profileId });
             }
         } else {
             res.status(401).json({ success: false, message: "Неверный логин или пароль" });
