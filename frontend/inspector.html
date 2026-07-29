@@ -10,7 +10,7 @@
             rel="stylesheet"
         />
     </head>
-    < class="dashboard-page">
+    <body class="dashboard-page">
         <div class="inspector-layout">
             <aside class="sidebar">
                 <div class="sidebar-logo">ФНС России</div>
@@ -31,6 +31,19 @@
                             <span class="user-role" id="inspectorRole">Загрузка...</span>
                         </div>
                         <div class="avatar" id="inspectorAvatar">--</div>
+                        <button
+                            id="logoutBtn"
+                            style="
+                                margin-left: 15px;
+                                padding: 5px 10px;
+                                cursor: pointer;
+                                border: 1px solid #ccc;
+                                border-radius: 4px;
+                                background: #f8f9fa;
+                            "
+                        >
+                            Выйти
+                        </button>
                     </div>
                 </header>
 
@@ -38,7 +51,7 @@
                     <section class="kpi-row">
                         <div class="kpi-card">
                             <p class="label">Собрано налогов (год)</p>
-                            <h2 class="amount">45 200 000 ₽</h2>
+                            <h2 class="amount" id="kpiCollected">Загрузка...</h2>
                         </div>
                         <div class="kpi-card">
                             <p class="label">Налогоплательщиков</p>
@@ -82,7 +95,7 @@
                                     <th>ФИО Налогоплательщика</th>
                                     <th>Статус долга</th>
                                     <th>Действие</th>
-                                 </tr>
+                                </tr>
                             </thead>
                             <tbody id="inspectorTableBody"></tbody>
                         </table>
@@ -90,6 +103,6 @@
                 </div>
             </main>
         </div>
-    <script src="js/main.js"></script>
+        <script src="js/main.js"></script>
     </body>
 </html>

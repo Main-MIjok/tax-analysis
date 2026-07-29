@@ -32,6 +32,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await fetch(`http://localhost:3000/api/taxpayer/${profileId}`);
         const data = await response.json();
 
+        console.log("Данные от сервера:", data);
+
         userNameElem.textContent = data.profile.full_name;
         const initials = data.profile.full_name
             .split(" ")
@@ -47,12 +49,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         data.properties.forEach(prop => {
             const isCar = prop.tax_type.includes("Транспортный");
-            const icon = isCar ? "🚗" : "🏠";
+
+            const iconPath = isCar ? "assets/car.svg" : "assets/house.svg";
             const bgColor = isCar ? "#F3E8FF" : "#FCE7F3";
 
             propertyContainer.innerHTML += `
                 <div class="property-card">
-                    <div class="icon" style="background: ${bgColor};">${icon}</div>
+                    <div class="icon" style="background: ${bgColor};">
+                        <!-- Вставляем картинку вместо эмодзи -->
+                        <img src="${iconPath}" alt="icon" style="width: 24px; height: 24px;">
+                    </div>
                     <div class="info">
                         <h4>${prop.property_name}</h4>
                         <p>${prop.tax_type}</p>
@@ -164,13 +170,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <td>${tp.inn}</td>
                     <td>${tp.full_name}</td>
                     <td>${debtHtml}</td>
-                    <td><button class="btn-fine" data-id="${tp.id}" style="padding: 6px 12px; font-size: 12px; cursor: pointer; background: #E63946; color: white; border: none; border-radius: 4px;">Штраф 1000 ₽</button></td>
+                    <td style="display: flex; gap: 8px;">
+                        <button class="btn-fine" data-id="${tp.id}" style="padding: 6px 12px; font-size: 12px; cursor: pointer; background: #E63946; color: white; border: none; border-radius: 4px;">Штраф 1000 ₽</button>
+                        <button class="btn-delete" data-id="${tp.id}" style="padding: 6px 12px; font-size: 12px; cursor: pointer; background: #6C757D; color: white; border: none; border-radius: 4px;">Списать</button>
+                    </td>
                 </tr>
             `;
         });
 
         const fineButtons = document.querySelectorAll(".btn-fine");
-
         fineButtons.forEach(button => {
             button.addEventListener("click", async e => {
                 const taxpayerId = e.target.getAttribute("data-id");
@@ -200,9 +208,51 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         });
 
+        const deleteButtons = document.querySelectorAll(".btn-delete");
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", async e => {
+                const taxpayerId = e.target.getAttribute("data-id");
+
+                const confirmDelete = confirm(
+                    "Вы уверены, что хотите аннулировать (удалить) все неоплаченные начисления этого пользователя?",
+                );
+                if (!confirmDelete) return;
+
+                try {
+                    const delResponse = await fetch("http://localhost:3000/api/delete-tax", {
+                        method: "DELETE",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ taxpayerId: taxpayerId }),
+                    });
+
+                    const result = await delResponse.json();
+
+                    if (result.success) {
+                        alert("Неоплаченные начисления успешно удалены из базы данных!");
+                        window.location.reload();
+                    } else {
+                        alert("Ошибка при удалении начисления.");
+                    }
+                } catch (err) {
+                    console.error("Ошибка сети:", err);
+                    alert("Не удалось связаться с сервером.");
+                }
+            });
+        });
+
+        document.getElementById("kpiCollected").textContent =
+            `${parseFloat(data.totalCollected).toLocaleString("ru-RU")} ₽`;
         document.getElementById("kpiTaxpayers").textContent = data.taxpayers.length;
         document.getElementById("kpiDebt").textContent = `${totalDebt.toLocaleString("ru-RU")} ₽`;
     } catch (err) {
         console.error("Ошибка загрузки данных инспектора:", err);
     }
 });
+
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("profileId");
+        window.location.href = "index.html";
+    });
+}

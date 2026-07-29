@@ -60,9 +60,13 @@ app.get("/api/inspector/:id", async (req, res) => {
              ORDER BY total_debt DESC`,
         );
 
+        const collectedQuery = await pool.query("SELECT total_sum FROM v_collected_taxes");
+        const totalCollected = collectedQuery.rows[0].total_sum;
+
         res.json({
             profile: inspectorQuery.rows[0],
             taxpayers: taxpayersQuery.rows,
+            totalCollected: totalCollected,
         });
     } catch (err) {
         console.error(err);
@@ -165,11 +169,25 @@ app.post("/api/add-tax", async (req, res) => {
             `INSERT INTO payments (taxpayer_id, tax_type_id, amount, status) 
              VALUES ($1, 3, $2, 'Не оплачено')`,
             [taxpayerId, amount],
+            // 2. Убрали дубль const propertyContainer (оставили строго один раз)
         );
 
         res.json({ success: true, message: "Штраф успешно начислен" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Ошибка сервера при начислении штрафа" });
+    }
+});
+
+app.delete("/api/delete-tax", async (req, res) => {
+    const { taxpayerId } = req.body;
+
+    try {
+        await pool.query(`DELETE FROM payments WHERE taxpayer_id = $1 AND status = 'Не оплачено'`, [taxpayerId]);
+
+        res.json({ success: true, message: "Задолженность успешно аннулирована" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Ошибка сервера при удалении начисления" });
     }
 });
