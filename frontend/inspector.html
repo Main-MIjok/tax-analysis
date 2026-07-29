@@ -27,10 +27,23 @@
                     <div class="header-title">Аналитическая панель региона</div>
                     <div class="profile-container">
                         <div class="inspector-info">
-                            <span class="user-name">Шаповалова О.В.</span>
-                            <span class="user-role">Руководитель (Код: 7000)</span>
+                            <span class="user-name" id="inspectorName">Загрузка...</span>
+                            <span class="user-role" id="inspectorRole">Загрузка...</span>
                         </div>
-                        <div class="avatar">ОШ</div>
+                        <div class="avatar" id="inspectorAvatar">--</div>
+                        <button
+                            id="logoutBtn"
+                            style="
+                                margin-left: 15px;
+                                padding: 5px 10px;
+                                cursor: pointer;
+                                border: 1px solid #ccc;
+                                border-radius: 4px;
+                                background: #f8f9fa;
+                            "
+                        >
+                            Выйти
+                        </button>
                     </div>
                 </header>
 
@@ -38,15 +51,15 @@
                     <section class="kpi-row">
                         <div class="kpi-card">
                             <p class="label">Собрано налогов (год)</p>
-                            <h2 class="amount">45 200 000 ₽</h2>
+                            <h2 class="amount" id="kpiCollected">Загрузка...</h2>
                         </div>
                         <div class="kpi-card">
                             <p class="label">Налогоплательщиков</p>
-                            <h2 class="amount">12 450</h2>
+                            <h2 class="amount" id="kpiTaxpayers">0</h2>
                         </div>
                         <div class="kpi-card">
                             <p class="label">Задолженность</p>
-                            <h2 class="amount alert">1 200 000 ₽</h2>
+                            <h2 class="amount alert" id="kpiDebt">0 ₽</h2>
                         </div>
                     </section>
 
@@ -74,44 +87,22 @@
                     </section>
 
                     <section class="report-section">
-                        <h3>Отчет о налоговых отчислениях по регионам</h3>
+                        <h3>Список налогоплательщиков и задолженностей</h3>
                         <table class="history-table">
                             <thead>
                                 <tr>
-                                    <th>Регион страны</th>
-                                    <th>Вид налога</th>
-                                    <th>Уровень налога</th>
-                                    <th>Кол-во плательщиков</th>
-                                    <th>Сумма отчислений</th>
+                                    <th>ИНН</th>
+                                    <th>ФИО Налогоплательщика</th>
+                                    <th>Статус долга</th>
+                                    <th>Действие</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Томская область</td>
-                                    <td>Транспортный</td>
-                                    <td>Региональный</td>
-                                    <td>15 000</td>
-                                    <td class="sum">45 000 000 ₽</td>
-                                </tr>
-                                <tr class="row-alt">
-                                    <td>Томская область</td>
-                                    <td>НДФЛ</td>
-                                    <td>Федеральный</td>
-                                    <td>32 100</td>
-                                    <td class="sum">120 500 000 ₽</td>
-                                </tr>
-                                <tr>
-                                    <td>Томская область</td>
-                                    <td>Имущественный</td>
-                                    <td>Местный</td>
-                                    <td>18 400</td>
-                                    <td class="sum">21 000 000 ₽</td>
-                                </tr>
-                            </tbody>
+                            <tbody id="inspectorTableBody"></tbody>
                         </table>
                     </section>
                 </div>
             </main>
         </div>
+        <script src="js/main.js"></script>
     </body>
 </html>
