@@ -5,20 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Дашборд инспектора - ФНС</title>
         <link rel="stylesheet" href="css/style.css" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     </head>
     <body class="dashboard-page">
         <div class="inspector-layout">
             <aside class="sidebar">
                 <div class="sidebar-logo">ФНС России</div>
                 <nav class="sidebar-nav">
-                    <a href="#" class="nav-item active">Аналитика</a>
-                    <a href="#" class="nav-item">Налогоплательщики</a>
-                    <a href="#" class="nav-item">Отчеты</a>
-                    <a href="#" class="nav-item">Настройки</a>
+                    <a href="#" class="nav-item active" data-tab="tab-analytics">Аналитика</a>
+                    <a href="#" class="nav-item" data-tab="tab-taxpayers">Налогоплательщики</a>
+                    <a href="#" class="nav-item" data-tab="tab-reports">Отчеты</a>
+                    <a href="#" class="nav-item" data-tab="tab-settings">Настройки</a>
                 </nav>
             </aside>
 
@@ -31,75 +28,167 @@
                             <span class="user-role" id="inspectorRole">Загрузка...</span>
                         </div>
                         <div class="avatar" id="inspectorAvatar">--</div>
-                        <button
-                            id="logoutBtn"
-                            style="
-                                margin-left: 15px;
-                                padding: 5px 10px;
-                                cursor: pointer;
-                                border: 1px solid #ccc;
-                                border-radius: 4px;
-                                background: #f8f9fa;
-                            "
-                        >
-                            Выйти
-                        </button>
+                        <button id="logoutBtn" style="margin-left: 15px; padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #f8f9fa;">Выйти</button>
                     </div>
                 </header>
 
                 <div class="workspace-content">
-                    <section class="kpi-row">
-                        <div class="kpi-card">
-                            <p class="label">Собрано налогов (год)</p>
-                            <h2 class="amount" id="kpiCollected">Загрузка...</h2>
-                        </div>
-                        <div class="kpi-card">
-                            <p class="label">Налогоплательщиков</p>
-                            <h2 class="amount" id="kpiTaxpayers">0</h2>
-                        </div>
-                        <div class="kpi-card">
-                            <p class="label">Задолженность</p>
-                            <h2 class="amount alert" id="kpiDebt">0 ₽</h2>
-                        </div>
-                    </section>
 
-                    <section class="charts-row">
-                        <div class="chart-card pie-chart-card">
-                            <h3>Структура по видам налогов</h3>
-                            <div class="chart-placeholder">
-                                <div class="pie-placeholder"></div>
-                                <div class="legend">
-                                    <div><span class="dot blue"></span> НДФЛ - 60%</div>
-                                    <div><span class="dot pink"></span> Транспортный - 40%</div>
+                    <!-- ========================================== -->
+                    <!-- ВКЛАДКА 1: АНАЛИТИКА (открыта по умолчанию)-->
+                    <!-- ========================================== -->
+                    <div id="tab-analytics" class="tab-content" style="display: block;">
+                        <section class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="label">Собрано налогов (год)</p>
+                                <h2 class="amount" id="kpiCollected">Загрузка...</h2>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="label">Налогоплательщиков</p>
+                                <h2 class="amount" id="kpiTaxpayers">0</h2>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="label">Задолженность</p>
+                                <h2 class="amount alert" id="kpiDebt">0 ₽</h2>
+                            </div>
+                        </section>
+
+                        <section class="charts-row">
+                            <div class="chart-card pie-chart-card">
+                                <h3>Структура по видам налогов</h3>
+                                <div class="chart-placeholder">
+                                    <div class="pie-placeholder"></div>
+                                    <div class="legend">
+                                        <div><span class="dot blue"></span> НДФЛ - 60%</div>
+                                        <div><span class="dot pink"></span> Транспортный - 40%</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="chart-card bar-chart-card">
-                            <h3>Поступления по месяцам</h3>
-                            <div class="bar-placeholder">
-                                <div class="bar" style="height: 40%"><span>Янв</span></div>
-                                <div class="bar" style="height: 60%"><span>Фев</span></div>
-                                <div class="bar" style="height: 80%"><span>Мар</span></div>
-                                <div class="bar" style="height: 50%"><span>Апр</span></div>
-                                <div class="bar" style="height: 90%"><span>Май</span></div>
+                            <div class="chart-card bar-chart-card">
+                                <h3>Поступления по месяцам</h3>
+                                <div class="bar-placeholder">
+                                    <div class="bar" style="height: 40%"><span>Янв</span></div>
+                                    <div class="bar" style="height: 60%"><span>Фев</span></div>
+                                    <div class="bar" style="height: 80%"><span>Мар</span></div>
+                                    <div class="bar" style="height: 50%"><span>Апр</span></div>
+                                    <div class="bar" style="height: 90%"><span>Май</span></div>
+                                </div>
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
 
-                    <section class="report-section">
-                        <h3>Список налогоплательщиков и задолженностей</h3>
+                    <!-- ========================================== -->
+                    <!-- ВКЛАДКА 2: НАЛОГОПЛАТЕЛЬЩИКИ (скрыта)      -->
+                    <!-- ========================================== -->
+                    <div id="tab-taxpayers" class="tab-content" style="display: none;">
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin: 0;">Реестр граждан</h3>
+                            <button id="btn-toggle-add-form" style="padding: 10px 15px; font-weight: bold; background: #28A745; color: white; border: none; border-radius: 4px; cursor: pointer;">+ Зарегистрировать</button>
+                        </div>
+
+                        <!-- Скрытая форма создания -->
+                        <div id="section-add-taxpayer" style="display: none; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                            <h3 style="margin-top: 0; color: #333;">Регистрация нового налогоплательщика</h3>
+                            <form id="form-add-taxpayer" style="display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin-top: 15px;">
+                                <div>
+                                    <label style="font-size: 14px; color: #666; display: block; margin-bottom: 5px;">ИНН (ровно 12 цифр)</label>
+                                    <input type="text" id="new-inn" placeholder="Например: 111122223333" required maxlength="12" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="font-size: 14px; color: #666; display: block; margin-bottom: 5px;">ФИО полностью</label>
+                                    <input type="text" id="new-fullname" placeholder="Иванов Иван Иванович" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="font-size: 14px; color: #666; display: block; margin-bottom: 5px;">Данные паспорта</label>
+                                    <input type="text" id="new-passport" placeholder="Серия и номер" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="font-size: 14px; color: #666; display: block; margin-bottom: 5px;">Временный пароль для входа</label>
+                                    <input type="text" id="new-password" required value="12345" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                                </div>
+                                <button type="submit" style="background: #28A745; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px;">Создать профиль</button>
+                            </form>
+                        </div>
+
+                        <section class="report-section">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>ИНН</th>
+                                        <th>ФИО Налогоплательщика</th>
+                                        <th>Статус долга</th>
+                                        <th>Действие</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inspectorTableBody"></tbody>
+                            </table>
+
+                            <div style="margin-top: 50px;">
+                                <h3 style="margin-bottom: 20px;">Последние транзакции (Оплачено)</h3>
+                                <table class="history-table" style="width: 100%; border-collapse: collapse;">
+                                    <thead style="background: #F8F9FA; text-align: left;">
+                                        <tr>
+                                            <th style="padding: 12px; border-bottom: 2px solid #DEE2E6;">Налогоплательщик</th>
+                                            <th style="padding: 12px; border-bottom: 2px solid #DEE2E6;">Назначение</th>
+                                            <th style="padding: 12px; border-bottom: 2px solid #DEE2E6;">Сумма</th>
+                                            <th style="padding: 12px; border-bottom: 2px solid #DEE2E6;">Дата оплаты</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inspectorPaymentsTableBody">
+                                        <tr>
+                                            <td colspan="4" style="text-align: center; padding: 15px; color: #666;">Загрузка истории...</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </section>
+                    </div>
+
+                    <div id="tab-reports" class="tab-content" style="display: none; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h3 style="margin: 0;">Сводный отчет по сборам</h3>
+                                <div style="display: flex; gap: 10px;">
+                                    <button id="btn-load-reports" style="padding: 10px 15px; font-weight: bold; background: #17A2B8; color: white; border: none; border-radius: 4px; cursor: pointer;">Сгенерировать отчет</button>
+                                    <button id="btn-export-csv" style="padding: 10px 15px; font-weight: bold; background: #28A745; color: white; border: none; border-radius: 4px; cursor: pointer; display: none;">Скачать CSV</button>
+                                </div>
+                            </div>
+
                         <table class="history-table">
                             <thead>
                                 <tr>
-                                    <th>ИНН</th>
-                                    <th>ФИО Налогоплательщика</th>
-                                    <th>Статус долга</th>
-                                    <th>Действие</th>
+                                    <th>Вид налога</th>
+                                    <th>Количество платежей</th>
+                                    <th>Собрано средств</th>
                                 </tr>
                             </thead>
-                            <tbody id="inspectorTableBody"></tbody>
+                            <tbody id="reportsTableBody">
+                                <tr>
+                                    <td colspan="3" style="text-align: center; color: #666; padding: 20px;">Нажмите кнопку для выгрузки данных из базы</td>
+                                </tr>
+                            </tbody>
                         </table>
-                    </section>
+                    </div>
+
+                    <div id="tab-settings" class="tab-content" style="display: none; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                        <h3 style="margin-top: 0; margin-bottom: 20px;">Настройки профиля сотрудника</h3>
+                        <form id="form-update-inspector" style="max-width: 400px; display: flex; flex-direction: column; gap: 15px;">
+                            <div>
+                                <label style="font-size: 14px; color: #666; display: block; margin-bottom: 5px;">ФИО Инспектора</label>
+                                <input type="text" id="setting-fullname" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="font-size: 14px; color: #666; display: block; margin-bottom: 5px;">Должность</label>
+                                <input type="text" id="setting-position" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="font-size: 14px; color: #666; display: block; margin-bottom: 5px;">Код подразделения (ИФНС)</label>
+                                <input type="text" id="setting-dept" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                            </div>
+                            <button type="submit" style="background: #FFC107; color: #333; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px;">Сохранить изменения</button>
+                        </form>
+                    </div>
+
                 </div>
             </main>
         </div>

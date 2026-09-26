@@ -5,10 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Личный кабинет налогоплательщика</title>
         <link rel="stylesheet" href="css/style.css" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     </head>
     <body class="dashboard-page">
         <header class="header">
@@ -16,7 +13,7 @@
                 <div class="logo-circle"></div>
                 <h1>Личный кабинет <span>Налогоплательщика</span></h1>
             </div>
-            <div class="profile-container"></div>
+            <div class="profile-container">
                 <span class="user-name" id="userName">Загрузка...</span>
                 <div class="avatar" id="userAvatar">--</div>
                 <button id="logoutBtn" style="margin-left: 15px; padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #f8f9fa;">Выйти</button>
@@ -33,12 +30,37 @@
                 <button class="btn-pay" id="payButton">Оплатить</button>
             </section>
 
-            <section class="property-section">
-                <h3>Мое имущество</h3>
-                <div class="property-list" id="propertyContainer"></div>
+            <section class="property-section" style="margin-top: 30px;">
+                <!-- Заголовок и кнопка -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0;">Мое имущество</h3>
+                    <button id="btn-toggle-add-property" style="padding: 8px 12px; font-weight: bold; background: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer;">+ Добавить имущество</button>
+                </div>
+
+                <!-- Скрытая форма добавления -->
+                <div id="section-add-property" style="display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #dee2e6;">
+                    <h4 style="margin-top: 0; color: #333;">Регистрация нового объекта</h4>
+                    <form id="form-add-property" style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+                        <div>
+                            <label style="font-size: 14px; color: #666; display: block; margin-bottom: 5px;">Название (Адрес или Марка авто)</label>
+                            <input type="text" id="new-prop-name" placeholder="Например: Lada Granta" required style="padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="font-size: 14px; color: #666; display: block; margin-bottom: 5px;">Тип объекта</label>
+                            <select id="new-prop-type" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; background: white; box-sizing: border-box;">
+                                <option value="2">Имущество (Квартира/Дом)</option>
+                                <option value="1">Транспорт (Автомобиль)</option>
+                            </select>
+                        </div>
+                        <button type="submit" style="background: #28A745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Зарегистрировать</button>
+                    </form>
+                </div>
+
+                <!-- Контейнер для карточек -->
+                <div class="property-list" id="propertyContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;"></div>
             </section>
 
-            <section class="history-section">
+            <section class="history-section" style="margin-top: 30px;">
                 <h3>История платежей</h3>
                 <table class="history-table">
                     <thead>
